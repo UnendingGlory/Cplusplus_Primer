@@ -796,6 +796,8 @@ cout << string(rcomma.base(), line.cend())
 
 为了保证正常的左闭右合区间特性，所以rcomma和rcomma.base()必须生成相邻位置而不是相同位置，一般base在rcomma的右边.
 
+![反向迭代器](./assets/ch10.png)
+
 15. 迭代器分类
 * input iterator
 
