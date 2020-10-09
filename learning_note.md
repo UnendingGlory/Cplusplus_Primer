@@ -145,6 +145,7 @@ throw runtime_error("Data must be a digit")
 g++ -E test.cc可以查看预处理之后的待编译源码
 
 gcc -c test.cc 会生成test.o
+
 命令 nm -C test.o可以查看对象文件中的各种定义
 
 链接多个对象文件，直接**g++ a.o b.o**即可
@@ -154,7 +155,9 @@ gcc -c test.cc 会生成test.o
 6. 使用引用可以避免不必要的拷贝，当函数无需修改引用形参的值时最好使用常量引用
 
 7. 顶层const作形参需要注意的点
+
 顶层const作为形参时，即可以传入const对象，也可以传入非const对象
+
 而当用实参初始化形参时会忽略掉该顶层const
 ```C++
 void fcn(const int i){}; // fcn可以读取const和非const对象，但是不能改变i
@@ -189,13 +192,21 @@ int main(int argc, char *argv[]) {……}
 int main(int argc, char **argv) {……}
 ```
 举例：（prog是一个可执行文件)
+
 如命令行指令：prog -d -o ofile data0 
+
 则argc应该等于5，argv是一个数组，其中各值如下（以空格分割）
+
 argv[0] = "prog";
+
 argv[1] = "-d";
+
 argv[2] = "-o";
+
 argv[3] = "ofile";
+
 argv[4] = "data0";
+
 argv[5] = 0;
 
 用处：比如在读取文件的时候，可以允许从命令行键入文件的path
@@ -218,14 +229,17 @@ vector<string> process()
 ```
 
 16. cstdlib中两个常量：EXIT_FAILURE和EXIT_SUCCESS作为主函数返回状态
+
 标准库定义该两个常量是为了使得返回值和机器无关，不同机器上0，1，2等main返回值代表不同的意思
 
 17. 重载函数：为操作非常相似的函数进行重载
+
 重载函数名和参数类型不能完全相同（这里尤其注意顶层const作为形参）
 
 18. C++函数默认参数，必须放在函数参数列表的最后（**局部**变量不能作为默认实参）
 
 19. 为什么引入inline函数？
+
 因为一些简单的小操作封装成函数有利于重复利用以及修改
 
 但是调用函数比调用等价的表达式要慢，因为函数调用需要保存寄存器如PC以及一些标志寄存器，并在返回时恢复（类似于保存断点，返回现场）；并且可能需要拷贝实参
@@ -237,7 +251,9 @@ vector<string> process()
 那么，省略了调用，代价是什么呢？代价就是会造成程序长度变大，所以如果inline太多会使得程序运行时占用的内存空间非常大，因为到inline的地方就是直接代码段插入，多次调用会使得程序膨胀，所以只建议用于小函数
 
 20. constexpr什么用? 感觉还是很难理解
+
 constexpr声明的函数是一种内联函数
+
 const修饰的可以被常量表达式初始化，也可以被编译器不能计算出值的表达式初始化
 
 而constexpr修饰的函数，一定要用常量表达式初始化或者作为返回值，一定可以用于指定数组的大小
@@ -259,10 +275,14 @@ constexpr是真正的常量，在编译器和运行期都是常量
 assert(expression)
 ```
 assert宏常用于检查不能发生的条件。
+
 assert行为以来一个叫NDEBUG的预处理变量的状态。
+
 如果定义了NDEBUG，则assert什么也不做。
+
 在程序中#define NDEBUG
-或者在命令行中cc -D NDEBUG main.cc
+
+或者在命令行中gcc -D NDEBUG main.cc
 
 23. 除了用assert，也可以用NDEBUG来编写自己的条件调试代码
 
@@ -279,6 +299,7 @@ void print(const int ia[], size_t size)
 ```
 
 24. 函数指针，函数式编程
+
 函数指针：一般该指针由括号括起来
 bool (\*pf) (const string &, const string&);
 // pf指向一个函数，该函数参数是两个const string的引用
@@ -287,6 +308,7 @@ bool lengthCompare(const string &, const string &);
 pf = lengthCompare; //使用时直接将函数名赋值给函数指针即可
 
 25. **对C++函数返回的理解**（**极其重要！**）
+
 * 返回值
 返回一个值和初始化一个变量或者形参的方式完全一样：返回的值用于初始化调用点的一个临时量，该临时量就是函数调用的结果。（对类也同样生效）
 
@@ -299,8 +321,11 @@ string make(const string& s)
 string s = "asda";
 string t = make(s);
 ```
+
 中间执行的过程：调用make时，生成一个临时的string变量temp，然后temp再用来初始化t
+
 等价于：string temp(s); string t(temp);
+
 因此，如果一个函数有返回值，调用完没有被赋值给对应对象，则其实一直是中间的temp对象在工作生效。不好好理解这个很可能编程时出现问题（见练习7.27，7.28)。
 
 * 返回引用
@@ -312,11 +337,15 @@ string t = make(s);
 
 #### Chapter 7 类
 1. 在类中，成员函数使用this的额外参数来访问调用它的那个对象
+
 this是一个常量指针，调用它的对象的**常量指针**
+
 定义类似如：A* const this，A为某个类，所以this不能绑定到其他对象上
 
 2. 类中在参数列表后的const关键字：修改隐式this指针类型
+
 使得this指针指向的是常量对象，即在该函数体下this指针指向的内容不能改变
+
 声明如：const A* const this
 
 这样使用const的成员函数被称为常量成员函数
@@ -324,9 +353,11 @@ this是一个常量指针，调用它的对象的**常量指针**
 当一个成员调用另一个成员时，this指针会在其中隐式地传递
 
 3. 编译器分两步处理类：首先编译成员的声明，然后再编译成员函数体
+
 因此，成员函数体可以随意使用类中的其他成员而无须在意这些成员的出现顺序
 
 4. 定义在类外的函数，前面需要包含类名
+
 编译器一旦看到这个函数名，就能理解剩余的代码是位于类的作用域内的，因此定义在类外的函数也可以随意使用本类内的成员
 
 5. 返回this指针一般和返回类型是引用相结合
@@ -344,6 +375,7 @@ struct Sales_data()
 ```
 
 9. 构造函数初始化列表：负责为新创建的对象的一个或几个数据成员赋初值
+
 如上一条中的第二个构造参数
 
 如果成员是const，引用，或者属于某种未提供默认构造函数的类类型，我们必须通过构造函数初始值列表为这些成员提供初值
@@ -374,12 +406,14 @@ ConstRef::ConstRef(int ii):i(ii), ci(ii), ri(ii){}
 10. struct默认访问权限是public，而class默认访问权限是private
 
 11. 友元：允许其他类或者函数访问自身的非公有成员
+
 一般来说，最好在类定义开始或者结束前的位置集中声明友元
 而定义一般放在外部
 
 注意：友元不存在传递性。
 
 12. 可变数据成员mutable，一个可变数据成员永远不会是const，即使它是const对象的成员
+
 可变数据成员即使在const函数中也可以改变。
 
 13.如果一个类想把一组重载函数声明成友元，它需要对这组函数中地每一个分别声明
@@ -387,6 +421,7 @@ ConstRef::ConstRef(int ii):i(ii), ci(ii), ri(ii){}
 14. 友元地作用只是影响访问权限，自身并非普通意义上的声明。
 
 15. 委托构造函数：可以在某个构造函数中调用其他的构造函数，使得可以使用其他构造函数的一些功能，而不用再自己写一大堆🆒
+
 example:
 ```C++
 class SalesData
@@ -400,6 +435,7 @@ class SalesData
 ```
 
 16. 类内构造函数explicit：防止函数传入的对象进行了隐式转换
+
 比如：如果一个函数的参数是string类型的，则istream类型对象传入会被自动转换
 如果又想重载一个stream类型的函数，则会产生二义性问题。
 这个时候将其声明为explicit类型即可。
@@ -412,10 +448,12 @@ class SalesData
 静态成员变量：类的静态成员存在于所有对象之外，相当的全局成员，只有一个静态成员且被所有的类对象共享
 
 一般静态成员不在类的内部初始化。
+
 不过constexpr类型声明的静态成员可以在类内初始化。
+
 声明：static constexpr int xxx = 3;
 
-静态成员函数：与静态成员相同，不与任何对象绑定在一起，所以不包含this指针，因此，静态成员函数不能声明成const的，并且我们也不能在static函数体内使用thi指针
+静态成员函数：与静态成员相同，不与任何对象绑定在一起，所以不包含this指针，因此，静态成员函数不能声明成const的，并且我们也不能在static函数体内使用this指针
 
 访问静态成员直接 **类名::成员名**即可
 
@@ -426,21 +464,29 @@ class SalesData
 ---
 #### Chapter 8 IO库
 1. IO类：iostream, fstream（针对文件），sstream（针对字符串）
+
 在这些类中，iostream分为istream，ostream
+
 fstream分为ifstream，ofstream
+
 sstream分为istringstream，ostringstream
 
 2. IO类型不能拷贝或者赋值
+
 因此如果函数返回IO类型对象，一般会返回引用
 
 3. endl操纵符会显式刷新缓冲区（少用）并输出一个回车
+
 flush会刷新缓冲区，但不加任何字符
 
 4. 如果有一个函数接收一个ostream &参数，我们在调用这个函数时，可以传递给它一个ofstream对象，对istream和ifstream也是类似的
 
 5. sstream头文件，string流，可以从string等读取数据，就像string是个IO流一样
+
 istringstream，可以读一个字符串形成一个istringstream对象
+
 ostringstream，可以存一个字符串
+
 \>>和<<箭头的方向就是流的方向
 
 ---
@@ -454,45 +500,60 @@ ostringstream，可以存一个字符串
 4. 元素范围: [begin, end)
 
 5. 迭代器：begin()，end()，rbegin(), rend(), cbegin(), cend()， crbegin(), crend()
+
     vector<int>::const_iterator 代表常量迭代器
+
     不过需要注意的是，以c开头的函数都是被重载过的。
+
     一个是const成员，返回const_iterator类型。
+
     一个是非const成员，返回iterator类型。
     
 6. 可以在不了解容器中元素类型的情况下使用它。
+
 如果需要元素类型，可以使用容器的value_type
+
 如果需要元素类型的一个引用，可以使用referenece或者const_reference
 
 7. 只有顺序容器（不包括array）的构造函数才接受大小参数。
+
 因为array的大小是类型的一部分且声明后就固定不变，如
+
+```C++
 array<int> 
 array<int, 42> // 42个int元素
-
+```
 
 8. 如果创建一个容器为另一个容器的拷贝，则两个容器类型必须匹配
+
 如果用迭代器范围来拷贝，则不需要
-如vector<int> vec(S.begin(), S.end()) 
-S为set<int>类型
+
+如vector<int> vec(S.begin(), S.end()), S为set<int>类型
 
 9. 顺序容器中还有很多使用的操作函数
+
 c1.swap(c2)：使用交换函数，比从c2向c1拷贝元素快得多
+
 seq.assign(b, e)
+
 将seq中的容器替换为迭代器b和e所表示的范围中的元素
 
 10. 将元素插入到vecot，string，deque的任何位置都是合法的，但是可能很耗时
+
 insert返回插入的元素的位置
 
 vector和string的insert和earse不仅有迭代器版本，还有下标类型版本
 
 11. emplace_back()，emplace(), emplace_front()会在容器管理的内存空间中直接创建对象
-而调用push_back()则会创建一个临时对象
-所以emplace_back效率较高
+
+而调用push_back()则会创建一个临时对象, 所以emplace_back效率较高
 
 12. 所有的顺序容器都有front()和back()，forward_list（单向链表)不支持back()
 
 13. 检查下标是否合法可以用at函数，如果传入的下标越界，则会抛一个out_of_range异常
 
 14. erase()函数可以删除指定迭代器位置的数，也可以删除一对范围内的数
+
 但是erase掉后应该将迭代器设置为删除元素之后的元素（即erase的返回值）
 
 15. 由于通过迭代器向容器中添加元素和删除元素的代码可能使迭代器失效，所以必须保证每次改变容器的操作后都正确地重定位迭代器
@@ -508,12 +569,15 @@ a = string{s.begin(), s.begin() + 2};
 ```
 
 19. string的各函数如果传的是迭代器，则insert的函数或者earse的范围也都应传迭代器
+
 如果传的是下标，则可以直接传字符串
 
 20. to_string() 将任意类型数据转换为string
+
 stod() stoi() stof() stol等等，将string转换为对double, int, float, long等数据
 
 21. 容器适配器：使得某些事物的行为看起来像另一种事物一样
+
 staclk<int> stk(deq); // 从deq拷贝元素到stk
 
 容器需要有增加和删除元素的能力，因此适配器不能构建在array和forward_list上。
@@ -533,7 +597,9 @@ priority_queue除了front，push_back()， pop_back()外还需要随机访问能
 2. 泛型算法运行于迭代器之上，且泛型算法永远不会执行底层容器的操作，因此算法永远不会改变底层容器的大小
 
 3. 只有容器类型运行相关操作时，才能用对应的算法
+
 比如加法算法accumulate，string支持加法，所以可以使用，但const char \*不支持，所以不能使用
+
 又比如比较算法equal，string支持，所以可以判断字符串值是否相等，但const char \*不支持，所以实际上比较的会是字符串的地址而不是字符串值✌
 
 4. 泛型算法本身不检查写操作，所以在使用泛型算法时，要保证容器内部的存储空间是足够的，否则可能发生灾难
@@ -548,7 +614,9 @@ fill_n(vec.begin(), 10, 0)
 如back_inserter
 
 5. 标准库算法unique
+
 由于标准库算法不能执行容器的操作，所以unique不能真正地使得容器中元素变唯一
+
 unique使得不重复的元素出现在容器的开始部分，返回值是不重复区域的最后一个位置
 
 假如string类型的vector如下。
@@ -566,31 +634,43 @@ unique使得不重复的元素出现在容器的开始部分，返回值是不�
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 
 unique函数返回倒数第二个位置的迭代器📕
+
 如果要删除掉重复的元素，则要调用容器的earse
+
 所以完整代码：earse(unique(a.begin(), a.end()), a.end())
 
 6. 标准库算法一般接受函数式的参数，称为谓词(predicate)
+
 谓词函数参数若是一元的，则称为一元谓词，若是二元的，则是二元谓词
 
 7. sort算法不能保证相等大小（这个大小也可以是用户自己定义的谓词函数，比如字符串的长度，如果相同长度的要维持原有顺序则应该用stable_sort）的元素排序后维持原有结果
+
 因此标准库提供了stable_sort算法，保证排序结果是稳定的
 
 8. lambda函数：可以将lambda函数理解为一个未命名的内联函数
+
 适用于只在一两个地方使用的简单操作，经常使用的操作应该定义为一个函数😋
 >*[capture list] (param list) -> return type {function body}*
 
 * labmda函数参数 
+
 labmda函数必须指定尾置返回来指定返回类型
-也可以忽略参数列表和返回类型，则参数列表未空，返回值由函数内部return
-指定。与普通函数不同的是，labmda函数不能有默认参数。
+
+也可以忽略参数列表和返回类型，则参数列表未空，返回值由函数内部return指定。
+
+与普通函数不同的是，labmda函数不能有默认参数。
+
 ```C++
 auto f = [] { return 42; };
 
 auto f = [&]() ->int { return 42; };
 ```
 * 捕获列表
+
 捕获列表声明了lambda函数中可以使用的布局变量
+
 如果没有捕获列表，则只能访问参数中的变量
+
 比如对一个string类型的vector排序后，计算满足size >= sz的元素的数目
 ```C++
 void biggies(vector<string> &words, vector<string>::size_type sz
@@ -602,10 +682,13 @@ void biggies(vector<string> &words, vector<string>::size_type sz
 ```
 
 如果在lambda函数中要改变局部变量的值，可以使用引用捕获[&sz]
+
 要尽量减少捕获的数据量，且可能的话应该避免捕获指针或引用。🔒
 
 * 隐式捕获
+
 捕获可以采用上面的显式捕获，也可以用隐式捕获的方式
+
 \[&]代表采用捕获引用的方式，[=]代表采用捕获值的方式
 
 * 由于参数列表有多个，所以可以混用显式和隐式捕获
@@ -616,16 +699,21 @@ for_each(words.begin(), words.end(),
 ```
 
 9. for_each(iterator begin, iterator last, callable)
+
 传入两个参数，位迭代器范围，第三个参数可以是一个调用对象参数
+
 会对输入序列中的每个元素都调用该对象
 
 10. 标准库bind函数，将一个可调用对象绑定到某个对象上，并传一个参数列表
+
 auto *newCallable* = std::bind(callable, *arg_list*);
 
 11. using namespace name_space
+
 这种形式说明来自namespace的所有名字都可以在程序中直接使用
 
 12. 插入迭代器，头文件：itetrator 🙏
+
 * back_inserter() 创建一个使用push_back()的迭代器
 * front_inserter() 创建一个使用push_front()的迭代器
 * inserter()创建一个使用insert的迭代器。此函数接受第二个参数，这个参数必须是一个指向给定容器的迭代器。元素将被插入到给定迭代器的元素之前。即使我们传递给inserter的位置原来指向第一个元素，只要我们在此元素之前插入一个新元素，此元素就不再是容器的首元素了
@@ -643,7 +731,9 @@ copy(lst.cbegin(), lst.cend(), inserter(lst3, lst3.begin())
 ```
 
 13. 流迭代器
+
 虽然iostream类型不是容器，但是标准库定义了可以用于这些IO类型对象的迭代器
+
 此种迭代器可以作用于所有的iostream类型对象
 
 istream_iterator和ostream_iterator
@@ -673,6 +763,7 @@ cout << accumulate(in_iter, eof, 0) << endl;
 ```
 
 注意，istream_iterator默认属于InputIterator，只提供了++, \*, !=等操作
+
 如果是sort就不能传流迭代器，因为sort中partition操作要求随机访问，所以需要的是RandomAccessIterator
 
 定义流迭代器的根本目的是为了适配标准算法，用的好根本就不需要显式的输入输出操作👍
@@ -681,7 +772,9 @@ cout << accumulate(in_iter, eof, 0) << endl;
 @attention 流迭代器只有递增运算符，没有递减运算符
 
 14. 反向迭代器
+
 反向迭代器会反过来处理容器，且反向迭代器只能反着移动
+
 如果我们希望打印一个逗号分割的单词列表"one, two, three"中的最后一个单词
 ```C++
 // 找到倒数第一个逗号的位置
@@ -707,19 +800,25 @@ cout << string(rcomma.base(), line.cend())
 * input iterator
 
 可以读取序列中的元素, 支持比较运算符,递增运算符,解引用运算符
+
 如istream_iterator就是一种input iterator
+
 find()和accumulate()要求input iterator
 
 * output iterator
 
 只写而不读元素,支持递增运算符,解引用运算符(但是只能出现在赋值运算符左侧)
+
 ostream_iterator就是一种output iterator
+
 copy()第三个参数是output iterator
 
 * forward iterator
 
 可以读写元素,但是只能朝一个方向移动。
+
 前向迭代器支持所有input和output iterater的操作
+
 forward_list的迭代器就是forward iterator
 
 * bidirectional iterator
@@ -729,5 +828,7 @@ forward_list的迭代器就是forward iterator
 * random-access iterator
 
 支持在常量时间内访问序列中任意序列的能力，支持双向迭代器所有功能且支持下标
+
 sort()要求random-access iterator
+
 array, deque, string, vector上的迭代器都是random-access iterator
