@@ -65,7 +65,9 @@ auto add4 = [](int a, int b)->int
 ```
 
 10. 头文件保护符：用来防止某一些文件重复定义
+
 ![5fe219a7cbe2a2832aed54aa7d14af16.png](./assets/ch02.png)
+
 11. constexpr函数 指能用于常量表达式赋值的函数，被隐式地指定为inline函数
 
 ---
@@ -243,6 +245,7 @@ const修饰的可以被常量表达式初始化，也可以被编译器不能计
 const强调变量不能被修改，而constexpr直接声明常量
 
 ![e1b4e281fe44a837f60888ff18df7b55.png](./assets/ch06.png)
+
 （没看懂==，后面复习的时候再理解）
 
 constexpr是真正的常量，在编译器和运行期都是常量
