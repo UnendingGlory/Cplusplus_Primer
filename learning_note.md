@@ -702,3 +702,27 @@ cout << string(rcomma.base(), line.cend())
 ```
 
 为了保证正常的左闭右合区间特性，所以rcomma和rcomma.base()必须生成相邻位置而不是相同位置，一般base在rcomma的右边.
+
+15. 迭代器分类
+* input iterator
+可以读取序列中的元素, 支持比较运算符,递增运算符,解引用运算符
+如istream_iterator就是一种input iterator
+find()和accumulate()要求input iterator
+
+* output iterator
+只写而不读元素,支持递增运算符,解引用运算符(但是只能出现在赋值运算符左侧)
+ostream_iterator就是一种output iterator
+copy()第三个参数是output iterator
+
+* forward iterator
+可以读写元素,但是只能朝一个方向移动。
+前向迭代器支持所有input和output iterater的操作
+forward_list的迭代器就是forward iterator
+
+* bidirectional iterator
+可以正向/反向读写序列中的元素，支持递减运算符
+
+* random-access iterator
+支持在常量时间内访问序列中任意序列的能力，支持双向迭代器所有功能且支持下标
+sort()要求random-access iterator
+array, deque, string, vector上的迭代器都是random-access iterator
