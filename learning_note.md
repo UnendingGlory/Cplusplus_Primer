@@ -714,6 +714,8 @@ auto *newCallable* = std::bind(callable, *arg_list*);
 
 12. 插入迭代器，头文件：itetrator 🙏
 
+inserter是一种迭代器适配器。
+
 * back_inserter() 创建一个使用push_back()的迭代器
 * front_inserter() 创建一个使用push_front()的迭代器
 * inserter()创建一个使用insert的迭代器。此函数接受第二个参数，这个参数必须是一个指向给定容器的迭代器。元素将被插入到给定迭代器的元素之前。即使我们传递给inserter的位置原来指向第一个元素，只要我们在此元素之前插入一个新元素，此元素就不再是容器的首元素了
