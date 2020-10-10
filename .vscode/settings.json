@@ -49,6 +49,7 @@
         "map": "cpp",
         "memory_resource": "cpp",
         "forward_list": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "set": "cpp"
     }
 }
