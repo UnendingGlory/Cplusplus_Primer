@@ -1,10 +1,10 @@
 # Cplusplus_Primer
 My solutions for C++ primer 5
 
-[Learning note here](https://github.com/UnendingGlory/Cplusplus_Primer/blob/master/learning_note.md)
+[My Learning note here](https://github.com/UnendingGlory/Cplusplus_Primer/blob/master/learning_note.md)
+
 
 ### Contents
-
 - [Chapter 1. Getting Started](ch01/README.md)
 - Part I: The Basics
   - [Chapter 2. Variables and Basic Types](ch02/README.md)
