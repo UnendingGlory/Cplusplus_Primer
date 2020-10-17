@@ -44,7 +44,7 @@ class StrBlobPtr
 public:
     StrBlobPtr() : curr(0) {}
     // wptr指向StrBlob中的shared_ptr
-    StrBlobPtr(StrBlob &a, size_t sz = 0): wptr(a.data), curr(sz){ }
+    StrBlobPtr(const StrBlob &a, size_t sz = 0): wptr(a.data), curr(sz){ }
     string& deref() const;
     StrBlobPtr& incr(); // 前缀递增
     // 重载!=运算符
