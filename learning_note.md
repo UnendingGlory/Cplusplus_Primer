@@ -1067,3 +1067,18 @@ allocate分配的内存时未构造的。我们需要按需再内存中构造对
 while(q != p)
     alloc.destroy(--q);
 ```
+
+19. 本章最后的例子结合了标准库各容器以及智能指针的使用。在这里加以说明。
+
+TextQuery类对文本进行分析并查询，查询结果保存在QueryResult中。
+
+由于需要将TextQuery类的数据成员提供给QueryResult使用，所以有以下几种解决办法：
+
+* 直接将TextQuery类的数据拷贝给QueryResult，这在数据量较大时难以接受
+* 将TextQuery的指针或者迭代器传给QueryResult，但这会带来新的问题：
+**如果TextQuery在QueryResult之前就被析构了**，则QueryResult无法工作且会有空指针问题，所以，两个类应该是同步(synchronized)的
+
+* 较好的解决办法是将两个类的数据成员声明为shared_ptr类型。
+调用TextQuery的查询方法时，返回一个QueryResult的构造函数，该构造函数参数包含要传入的智能指针即可
+
+（具体细节可见习题12.27)
