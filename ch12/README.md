@@ -11,7 +11,7 @@
 
 3. shared_ptr允许多个指针指向同一个对象；unique_ptr则“独占”所指向的对象
 
-weak_ptr的伴随类，是一种弱引用
+weak_ptr的伴随类，是一种弱引用，是一种不控制所指向对象生存期的智能指针
 
 4. 解引用一个智能指针返回它指向的对象。
 
@@ -42,6 +42,8 @@ auto p6 = make_shared<vector<string>>()
 8. 每个shared_ptr都有一个关联计数器称为引用计数，一旦一个shared_ptr的计数器变为0，它就会自动释放自己所管理的对象。
 
 释放操作是调用shared_ptr类的析构函数完成的，析构函数释放对象获得的资源。
+
+可以用reset函数，类似shared_ptr.reset(new int(40)) 来分配新的拷贝
 
 9. 程序使用动态内存出于以下三种原因：
 * 程序不知道自己需要使用多少对象
@@ -138,14 +140,24 @@ alloc.deallocate(p, n); //释放从p地址开始的n个string的内存
 ```
 
 allocate分配的内存时未构造的。我们需要按需再内存中构造对象。
-* a.construct(p, args) 调用构造函数
+* a.construct(p, args) p为位置，args为值，调用对应的构造函数，可以是std::move
 * a.destroy(p) 调用析构函数，注意，必须对每个构造的元素调用destroy来摧毁
 ```C++
 while(q != p)
     alloc.destroy(--q);
 ```
 
-19. 本章最后的例子结合了标准库各容器以及智能指针的使用。在这里加以说明。
+19. uninitialized_copy(b, e, b2)
+
+uninitialized_copy_n(b, n, b2)
+
+uninitialized_fill(b, e, t)
+
+uninitialized_fill_n(b, n, t)
+
+这些算法都是allocator类的伴随算法，详情可见p429，返回值一般是构建完成后最后一个元素之后的那个位置
+
+20. 本章最后的例子结合了标准库各容器以及智能指针的使用。在这里加以说明。
 
 TextQuery类对文本进行分析并查询，查询结果保存在QueryResult中。
 
