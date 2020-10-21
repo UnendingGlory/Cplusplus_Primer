@@ -211,7 +211,13 @@ public:
 
 34. 引用限定符也可以区分重载版本
 ```C++
-
+class Foo {
+public:
+    Foo sorted() &&; // 可用于可改变的左值
+    Foo sorted() const &; // 可用于任意类型Foo
+private:
+    vector<int> data;
+};
 ```
 
 如果我们定义了2个或2个以上具有相同名字和相同参数列表的成员函数，旧必须对所有这些函数加上引用限定符
