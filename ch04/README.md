@@ -19,6 +19,6 @@ tpye为要转换的目标类型，如果type是引用类型则目标是左值。
 而cast-name可选以下四种:
 
 * static_cast：只要不包含底层const，则都可以使用明确定义的static_cast
-* dynamic_cast：
+* dynamic_cast：将一个基类对象指针（或引用）转换到继承类指针
 * const_cast： 只能改变对象的底层const，转换成的type必须是指针或者引用
-* reinterpret_cast： 不会用
+* reinterpret_cast： 用于指针间的转换

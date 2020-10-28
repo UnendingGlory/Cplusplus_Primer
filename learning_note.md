@@ -14,6 +14,20 @@
  */
 ```
 
+源码函数注释编写：
+```C++
+/**
+ *  @brief 对函数功能的简述
+ *  @param __x 函数中出现过的变量说明
+ *  @return 说明函数的返回
+ *  other despcritions or notations
+ */
+
+/** 
+ *  @note 提示点
+ */
+```
+
 5. 预处理名字由预处理器提供而非编译器管理，调用时直接使用即可，由编译器管理的使用时才需要std::或者xxx::来声明
 
 #include，#define都是预处理定义
@@ -103,9 +117,9 @@ tpye为要转换的目标类型，如果type是引用类型则目标是左值。
 而cast-name可选以下四种:
 
 * static_cast：只要不包含底层const，则都可以使用明确定义的static_cast
-* dynamic_cast：
+* dynamic_cast：将一个基类对象指针（或引用）转换到继承类指针
 * const_cast： 只能改变对象的底层const，转换成的type必须是指针或者引用
-* reinterpret_cast： 不会用
+* reinterpret_cast： 用于指针间的转换
 
 #### Chapter 5 语句
 1. C++异常处理
