@@ -107,7 +107,7 @@ void StrVec::reallocate()
     for(size_t i = 0; i != size(); ++i)
         alloc.construct(dest++, std::move(*elem++));
     // 移动完元素，释放旧内存空间
-    free();
+    free(); 
     elements = newdata;
     first_free = dest;
     cap = newdata + newcapacity;
