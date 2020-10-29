@@ -49,5 +49,9 @@ int main()
     vfptr[0][0](); // B show
     vfptr[0][1](); // B show2
 
+    using FPointer = void(*)();
+    FPointer **table = reinterpret_cast<FPointer **>(&c_c);
+    table[0][0]();
+
     return 0;
 }
