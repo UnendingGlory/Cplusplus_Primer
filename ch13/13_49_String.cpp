@@ -49,7 +49,7 @@ String& String::operator=(const String &s)
 }
 
 // 移动构造函数，先偷再设空
-// 这些假设都是建立在类里有指针
+// 这些假设都是建立在类里有指针，这些都是对临时对象而言
 String::String(String &&s) noexcept : elements(s.elements), end(s.end)
 {
     s.elements = s.end = nullptr;
