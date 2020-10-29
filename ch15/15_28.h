@@ -128,26 +128,12 @@ public:
     virtual Bulk_quote* clone() const && { return new Bulk_quote(std::move(*this)); }
 
     // 覆盖基类的函数版本以实现大量购买的折扣政策
-    double net_price(size_t) const override;
+    double net_price(std::size_t) const override;
 private:
     size_t min_qty = 0; // 是用折扣政策的最小购买量min_quantity
     double discount = 0.0; // 以小数代表折扣额
 };
 
-double Bulk_quote::net_price(size_t cnt) const
-{
-    if(cnt >= min_qty)
-        return cnt * (1 - discount) * price;
-    else
-        return cnt * price;
-}
-
-double print_total(std::ostream &os, const Quote &item, size_t n)
-{
-    double ret = item.net_price(n);
-    os << "ISBN: " << item.isbn() << " #sold: " << n << 
-        " total due: " << ret << '\n';
-    return ret;
-}
+double print_total(std::ostream &, const Quote &, size_t);
 
 #endif
