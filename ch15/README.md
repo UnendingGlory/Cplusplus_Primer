@@ -177,7 +177,7 @@ int main()
 }
 ```
 图例如下：
-![b533131afe2382fbfbf848ffe22e1bc7.png](en-resource://database/1504:1)
+![b533131afe2382fbfbf848ffe22e1bc7.png](../assets/ch15.png)
 
 
 函数指针强转成二维的，因为对象中有其他元素
