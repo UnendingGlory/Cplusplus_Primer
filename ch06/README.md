@@ -120,22 +120,35 @@ vector<string> process()
 
 那么，省略了调用，代价是什么呢？代价就是会造成程序长度变大，所以如果inline太多会使得程序运行时占用的内存空间非常大，因为到inline的地方就是直接代码段插入，多次调用会使得程序膨胀，所以只建议用于小函数
 
-20. constexpr什么用? 感觉还是很难理解
+20. constexpr什么用?
 
-constexpr声明的函数是一种内联函数
+constexpr可以用来修饰object，也可以用来修饰函数
 
-const修饰的可以被常量表达式初始化，也可以被编译器不能计算出值的表达式初始化
+const强调变量不能被修改，是运行时常量
 
-而constexpr修饰的函数，一定要用常量表达式初始化或者作为返回值，一定可以用于指定数组的大小
+constexpr object是编译期常量，而constexpr function不一定，编译器会看情况而定
 
-const强调变量不能被修改，而constexpr直接声明常量
+[const和constexpr的区别](https://www.zhihu.com/question/35614219)
 
-![e1b4e281fe44a837f60888ff18df7b55.png](./assets/ch06.png)
-
-（没看懂==，后面复习的时候再理解）
-
-constexpr是真正的常量，在编译器和运行期都是常量
-但是const只是编译器常量
+```C++
+constexpr int foo(int i)
+{
+    return i + 5;
+}
+int main()
+{
+    // 如果这里声明为constexpr int i = 10，那么以下都正确
+    // 因为编译器确保i在编译期不会被改变
+    int i = 10; 
+    std::array<int, foo(5)> arr; // OK
+    
+    foo(i); // Call is Ok
+    
+    // But...
+    std::array<int, foo(i)> arr1; // Error
+    return 0;
+}
+```
 
 21. 一般而言，inline函数和constexpr函数的**定义**放在头文件内
 

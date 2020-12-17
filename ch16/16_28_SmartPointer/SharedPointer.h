@@ -14,9 +14,26 @@
 
 namespace cp5
 {
+    // a function object designed for deleter
+    struct Delete
+    {
+        template<typename T>
+        auto operator() (T* p) const
+        {
+            delete p;
+        }
+    };
+}
+
+namespace cp5
+{
     template<typename T>
     class SharedPointer;
 
+    // 由于要交换底层的指针
+    // 所以采用这种特化版本的swap效率会更高
+    // 可以高效的交换SharedPointer对象
+    // 又不会影响std::swap的正常功能使用
     template<typename T>
     auto swap(SharedPointer<T>& lhs, SharedPointer<T>& rhs)
     {

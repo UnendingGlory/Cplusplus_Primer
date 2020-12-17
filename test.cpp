@@ -20,9 +20,6 @@ int main()
     std::copy( std::sregex_token_iterator(text.begin(), text.end(), ws_re, -1),
                std::sregex_token_iterator(),
                std::ostream_iterator<std::string>(std::cout, "\n"));
-
-    std::cout << '\n' ;
-
     // Iterating the first submatches
     const std::string html = R"(<p><a href="http://google.com">google</a> )"
                              R"(< a HREF ="http://baidu.com">baidu</a>\n</p>)";
@@ -31,5 +28,6 @@ int main()
                std::sregex_token_iterator(),
                std::ostream_iterator<std::string>(std::cout, "\n"));
     
-    std::terminate();
+    
+    // std::terminate();
 }
